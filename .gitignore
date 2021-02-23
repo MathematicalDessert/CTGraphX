@@ -1,0 +1,9 @@
+# Build directory
+build/
+
+# VS Directory
+.vs/
+.vscode/
+
+# Data (confidential)
+data/
