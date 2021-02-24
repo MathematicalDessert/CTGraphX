@@ -9,7 +9,7 @@ namespace {
 		const std::int16_t output_min,
 		const std::int16_t output_max) {
 		const auto intermediate = (value - input_min) / static_cast<double>(input_max - input_min);
-		return output_max * intermediate + output_min * (1.0 - intermediate);
+		return static_cast<short>(output_max * intermediate + output_min * (1.0 - intermediate));
 	}
 }
 
@@ -47,7 +47,7 @@ namespace ct {
 	}
 
 	std::int16_t CTHead::get_voxel(const std::size_t z, const std::size_t y, const std::size_t x, const bool map) {
-		const auto value = data_.data()[coordinates_to_value(z, y, x)];
+		const auto value = data_[coordinates_to_value(z, y, x)];
 
 		if (map) {
 			return map_range(value, value_min_, value_max_, 0, 255);

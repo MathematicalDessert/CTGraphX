@@ -23,7 +23,8 @@ namespace window {
 		int render_style_ = static_cast<int>(RenderStyle::slice);
 
 		std::array<double, 4> transfer_function(const std::int16_t value) const;
-		
+
+		void update_all();
 		void update_top_view();
 		void update_front_view();
 		void update_side_view();

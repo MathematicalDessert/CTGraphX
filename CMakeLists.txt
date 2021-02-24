@@ -29,7 +29,8 @@ add_executable(
 	src/window/render_settings.cpp
 	src/window/debug_panel.cpp
 	src/ct/ct_head.cpp
-	src/window/ct_head_viewer.cpp)
+	src/window/ct_head_viewer.cpp
+	src/helpers/vec4.cpp)
 
 # Link necessary libraries
 target_link_libraries(ctgraphx imgui ${OpenGL_LIBRARIES} ${SDL2_LIBRARIES} Opengl32 OpenCL::OpenCL spdlog::spdlog spdlog::spdlog_header_only)
