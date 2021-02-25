@@ -51,7 +51,7 @@ namespace window {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-		const auto data = new GLuint[width * height];
+		const auto data = std::make_unique<GLuint[]>(width * height);
 
 		switch (static_cast<RenderStyle>(render_style_)) {
 		case RenderStyle::slice: {
@@ -99,7 +99,8 @@ namespace window {
 			for (auto j = 0; j < width; j++) {
 				for (auto k = 0; k < height; k++) {
 #endif
-					std::array<double, 4> voxel{ 0, 0, 0, 1 };
+					const auto light = lighting_ / 100.0;
+					std::array<double, 4> voxel{ 0, 0, 0, light };
 
 					// loop for data
 					for (auto slice = 0; slice < depth; slice++) {
@@ -127,13 +128,13 @@ namespace window {
 						const auto transparency = voxel[3];
 						const auto transformed_transparency = transformed_value[3];
 
-						voxel[0] += transparency * transformed_transparency * 1 * transformed_value[0];
-						voxel[1] += transparency * transformed_transparency * 1 * transformed_value[1];
-						voxel[2] += transparency * transformed_transparency * 1 * transformed_value[2];
-						voxel[3] *= (1 - transformed_transparency);
+						
+						voxel[0] += transparency * transformed_transparency * light * transformed_value[0];
+						voxel[1] += transparency * transformed_transparency * light * transformed_value[1];
+						voxel[2] += transparency * transformed_transparency * light * transformed_value[2];
+						voxel[3] *= light - transformed_transparency;
 					}
 
-					// static_cast<int>(255 * transparency)
 					data[k * width + j] =
 						255 << 24 |
 						static_cast<int>(voxel[2] * 255) << 16 |
@@ -151,10 +152,8 @@ namespace window {
 		default: break;
 		}
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		delete[] data;
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get());
 	}
-
 	
 	CTHeadViewer::CTHeadViewer(state::CTHeadState& ct_head_state)
 		: ct_head_state_(&ct_head_state) {
@@ -193,14 +192,14 @@ namespace window {
 			ImGui::SameLine();
 			if (ImGui::SliderInt("Side", &side_slider_, 0, ct::CTHead::max_height - 1)) update_side_view();
 		} else if (render_style_ == static_cast<int>(RenderStyle::volume)) {
-			if (ImGui::SliderInt("Skin Transparency", &transparency_, 0, 100)) {
+			if (ImGui::SliderInt("Skin Opacity", &transparency_, 0, 100)) {
+				update_all();
+			}
+
+			if (ImGui::SliderInt("Source Light Brightness", &lighting_, 0, 100)) {
 				update_all();
 			}
 		}
-
-
-		
 		ImGui::End();
 	}
-
 }

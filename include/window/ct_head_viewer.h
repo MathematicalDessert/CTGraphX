@@ -14,15 +14,16 @@ namespace window {
 		state::CTHeadState* ct_head_state_;
 		GLuint* textures_;
 		
-		int top_down_slider_ = 0;
-		int front_back_slider_ = 0;
-		int side_slider_ = 0;
+		int top_down_slider_ = 76;
+		int front_back_slider_ = 76;
+		int side_slider_ = 76;
 
+		int lighting_ = 99;
 		int transparency_= 12;
 
 		int render_style_ = static_cast<int>(RenderStyle::slice);
 
-		std::array<double, 4> transfer_function(const std::int16_t value) const;
+		std::array<double, 4> transfer_function(std::int16_t value) const;
 
 		void update_all();
 		void update_top_view();
