@@ -32,7 +32,6 @@ namespace window {
 		update_front_view();
 		update_side_view();
 	}
-
 	
 	void CTHeadViewer::update_top_view() {
 		update_view(textures_[0], 256, 256, 113, false, false);
@@ -48,6 +47,10 @@ namespace window {
 
 	void CTHeadViewer::update_view(GLuint texture_id, const int width, const int height, const int depth, const bool back, const bool side) {
 		glBindTexture(GL_TEXTURE_2D, texture_id);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
@@ -149,6 +152,11 @@ namespace window {
 #endif
 			break;
 		}
+		case RenderStyle::raycast: {
+			// Raycasted model.
+
+			
+		}
 		default: break;
 		}
 
@@ -163,7 +171,7 @@ namespace window {
 		update_all();
 	}
 
-	CTHeadViewer::~CTHeadViewer() {
+	CTHeadViewer::~CTHeadViewer() {		
 		glDeleteTextures(3, textures_);
 		delete textures_;
 	}

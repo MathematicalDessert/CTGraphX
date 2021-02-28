@@ -1,5 +1,6 @@
 #include <memory>
 #include <spdlog/spdlog.h>
+#include <Eigen/Dense>
 
 #include "application.h"
 

@@ -13,6 +13,7 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCL REQUIRED)
 find_package(spdlog REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 # IMGUI project
 add_subdirectory(imgui)
@@ -33,7 +34,15 @@ add_executable(
 	src/helpers/vec4.cpp)
 
 # Link necessary libraries
-target_link_libraries(ctgraphx imgui ${OpenGL_LIBRARIES} ${SDL2_LIBRARIES} Opengl32 OpenCL::OpenCL spdlog::spdlog spdlog::spdlog_header_only)
+target_link_libraries(ctgraphx 
+	imgui 
+	${OpenGL_LIBRARIES}
+	${SDL2_LIBRARIES}
+	Opengl32 
+	OpenCL::OpenCL 
+	spdlog::spdlog 
+	spdlog::spdlog_header_only
+	Eigen3::Eigen)
 
 # Install application
 install(TARGETS ctgraphx RUNTIME DESTINATION bin)

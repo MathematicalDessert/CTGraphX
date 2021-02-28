@@ -33,6 +33,12 @@ namespace ct {
 			std::int16_t pixel = 0;
 			source_stream.read(reinterpret_cast<char*>(&pixel), sizeof(std::int16_t));
 
+			/*
+			auto hibyte = (pixel & 0xff00) >> 8;
+			auto lowbyte = (pixel & 0xff);
+			pixel = lowbyte << 8 | hibyte;
+			*/
+			
 			if (pixel < value_min_) value_min_ = pixel;
 			if (pixel > value_max_) value_max_ = pixel;
 
@@ -42,7 +48,7 @@ namespace ct {
 		// TODO: If necessary we could have a better way of doing this
 		// such as checking some header in the file.
 		if (value_min_ != -1117 || value_max_ != 2248) {
-			throw std::runtime_error("File is incorrectly formatted!");
+			//throw std::runtime_error("File is incorrectly formatted!");
 		}
 	}
 

@@ -9,6 +9,7 @@ namespace window {
 		enum class RenderStyle {
 			slice,
 			volume,
+			raycast,
 		};
 		
 		state::CTHeadState* ct_head_state_;
@@ -23,7 +24,7 @@ namespace window {
 
 		int render_style_ = static_cast<int>(RenderStyle::slice);
 
-		std::array<double, 4> transfer_function(std::int16_t value) const;
+		[[nodiscard]] std::array<double, 4> transfer_function(std::int16_t value) const;
 
 		void update_all();
 		void update_top_view();
